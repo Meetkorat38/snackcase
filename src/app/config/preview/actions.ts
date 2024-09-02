@@ -45,6 +45,7 @@ export const createCheckoutSession = async ({
   const existingOrder = await db.order.findFirst({
     where: {
       userId: user.id,
+      configurationId: configuration.id,
     },
   });
 
@@ -70,7 +71,7 @@ export const createCheckoutSession = async ({
   });
 
   const stripeSession = await stripe.checkout.sessions.create({
-    success_url: `${process.env.NEXT_PUBLIC_SERVER_URL!}/thank-you?ordeerId=${
+    success_url: `${process.env.NEXT_PUBLIC_SERVER_URL!}/thank-you?orderId=${
       order.id
     }`,
     cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL!}/config/preview?id=${

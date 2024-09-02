@@ -88,6 +88,19 @@ export default function Home() {
                   <p>
                     <span className="font-semibold">1250</span> happy customers
                   </p>
+
+                  <div className="sm:hidden flex justify-center">
+                    <Link
+                      className={buttonVariants({
+                        size: "lg",
+                        className: "mx-auto mt-8",
+                      })}
+                      href="/config/upload"
+                    >
+                      Create your case now{" "}
+                      <ArrowRight className="h-4 w-4 ml-1.5" />
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
@@ -253,7 +266,7 @@ export default function Home() {
               print warranty
             </li>
 
-            <div className="flex justify-center">
+            <div className="hidden sm:flex justify-center">
               <Link
                 className={buttonVariants({
                   size: "lg",
