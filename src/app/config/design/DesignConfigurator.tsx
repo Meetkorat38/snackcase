@@ -29,6 +29,7 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { Rnd } from "react-rnd";
 import { saveConfig as _saveConfig, saveConfigData } from "./actions";
+import axios from "axios";
 
 interface DesignConfigurator {
   configId: string;
@@ -56,6 +57,34 @@ const DesignConfigurator = ({
     material: MATERIALS.options[0],
     finish: FINISHES.options[0],
   });
+
+  const [bgRemoveUrl, setBgRemoveUrl] = useState(imageUrl);
+  const [isLoading, setIsLoading] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+
+  const BgImageHandler = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axios.post("/api/removebg", {
+        imageUrl: bgRemoveUrl,
+      });
+
+      if (response.data.success) {
+        setIsLoading(false);
+        setBgRemoveUrl(response.data.image); // Set the processed image URL
+      } else {
+        console.error("Background removal failed:", response.data.error);
+      }
+    } catch (error: any) {
+      toast({
+        title: "Bg Remove failed",
+        description:
+          error.message ||
+          "Remove image background failed please try again later",
+        variant: "destructive",
+      });
+    }
+  };
 
   const [renderDimensions, setRenderDimensions] = useState<{
     width: number;
@@ -124,7 +153,7 @@ const DesignConfigurator = ({
 
       const userImage: HTMLImageElement = new Image();
       userImage.crossOrigin = "anonymous";
-      userImage.src = imageUrl;
+      userImage.src = bgRemoveUrl;
 
       await new Promise((resolve) => (userImage.onload = resolve));
 
@@ -233,7 +262,7 @@ const DesignConfigurator = ({
           <div className="relative h-full w-full ">
             <NextImage
               fill
-              src={imageUrl}
+              src={bgRemoveUrl}
               alt="your custome image"
               className="pointer-events-none  aspect-[9/16]"
             />
@@ -250,9 +279,23 @@ const DesignConfigurator = ({
           />
 
           <div className="px-8 pb-12 pt-8">
-            <h2 className="tracking-tighter font-bold text-3xl">
+            <h2 className="tracking-tighter  mb-3 font-bold text-3xl">
               Customize your case
             </h2>
+
+            <Button
+              loadingText="Removing"
+              isLoading={isLoading}
+              disabled={disabled}
+              onClick={() => {
+                setDisabled(true);
+                BgImageHandler();
+              }}
+              variant={"default"}
+              className="w-full"
+            >
+              Remove BG
+            </Button>
 
             <div className="w-full h-px bg-zinc-200 my-6" />
 
