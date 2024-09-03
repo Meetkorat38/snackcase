@@ -10,8 +10,6 @@ const ThankYou = () => {
   const searchParams = useSearchParams();
   const orderId = searchParams.get("orderId")!;
 
-  console.log(orderId);
-
   const { data } = useQuery({
     queryKey: ["get-order-done"],
     queryFn: async () => await getPaymentStatus({ orderId: orderId }),

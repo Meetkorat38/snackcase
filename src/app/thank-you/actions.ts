@@ -15,8 +15,6 @@ const getPaymentStatus = async ({ orderId }: { orderId: string }) => {
     throw new Error("Order not found");
   }
 
-  console.log("order Id  : " + orderId);
-
   const order = await db.order.findFirst({
     where: {
       id: orderId,
@@ -30,8 +28,6 @@ const getPaymentStatus = async ({ orderId }: { orderId: string }) => {
   });
 
   if (!order) throw new Error("Order not found");
-
-  console.log(order.isPaid);
 
   if (order.isPaid) {
     return order;
