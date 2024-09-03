@@ -41,7 +41,7 @@ const PhonePreview = ({
   return (
     <AspectRatio ref={ref} ratio={3000 / 2001} className="relative">
       <div
-        className="absolute z-20 scale-[1.0352]"
+        className="absolute  z-20 scale-[1.0352]"
         style={{
           left:
             renderedDimensions.width / 2 -
@@ -52,7 +52,7 @@ const PhonePreview = ({
         <img
           width={renderedDimensions.width / (3000 / 637)}
           className={cn(
-            "phone-skew relative z-20 rounded-t-[15px] rounded-b-[10px] md:rounded-t-[30px] md:rounded-b-[20px]",
+            "phone-skew pointer-events-none relative z-20 rounded-t-[15px] rounded-b-[10px] md:rounded-t-[30px] md:rounded-b-[20px]",
             caseBackgroundColor
           )}
           src={imageUrl}
